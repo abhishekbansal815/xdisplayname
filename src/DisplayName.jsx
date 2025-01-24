@@ -1,27 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 
 function DisplayName() {
+  const [fullName, setFullName] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const fname = e.target.fname.value.trim();
+    const lname = e.target.lname.value.trim();
+    
+    if (fname && lname) {
+      setFullName(`${fname} ${lname}`);
+    } else {
+      setFullName("");
+    }
+    setIsSubmitted(true);
+  };
+
   return (
     <div>
       <h1>Full Name Display</h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const fname = e.target.fname.value;
-          const lname = e.target.lname.value;
-          const fullName = fname + " " + lname;
-          document.querySelector(".fullName").innerHTML = `Full Name: ${fullName}`;
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <label htmlFor="fname">First Name:</label>
         <input type="text" id="fname" name="fname" required />
         <br />
         <label htmlFor="lname">Last Name:</label>
         <input type="text" id="lname" name="lname" required />
         <br />
-        <input type="submit" value="Submit" />
+        <button type="submit">Submit</button>
       </form>
-      <p className="fullName">{""}</p>
+      {isSubmitted && (
+        <p className="fullName">
+          Full Name: {fullName}
+        </p>
+      )}
     </div>
   );
 }
